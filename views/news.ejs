@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости колледжа - Рейтинг учащихся</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .news-page-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .news-grid-page {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .news-card-page {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .news-card-page:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .news-image-page {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .news-content-page {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .news-title-page {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .news-excerpt-page {
+            color: #6c757d;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        
+        .news-meta-page {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        
+        .news-date {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .read-more-page {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .read-more-page:hover {
+            color: #5a67d8;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/images/logo.footer.jpg" alt="Логотип колледжа" width="60" height="60">
+                <span>Рейтинг учащихся</span>
+            </div>
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/news" class="active">Новости</a></li>
+                <li><a href="/rating">Рейтинг</a></li>
+                <% if (user) { %>
+                    <li><a href="/profile">Личный кабинет</a></li>
+                    <% if (user.role === 'admin') { %>
+                        <li><a href="/admin">Админ-панель</a></li>
+                    <% } %>
+                    <li><a href="/auth/logout">Выйти</a></li>
+                <% } else { %>
+                    <li><a href="/auth/login">Войти</a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="news-page-container">
+            <div class="page-header">
+                <h1>📰 Все новости колледжа</h1>
+                <p>Следите за последними событиями и достижениями</p>
+            </div>
+
+            <div class="news-grid-page">
+                <% news.forEach(newsItem => { %>
+                <div class="news-card-page">
+                    <img src="<%= newsItem.image ? '/uploads/' + newsItem.image : '/images/news1.jpg' %>" 
+                         alt="<%= newsItem.title %>" class="news-image-page">
+                    
+                    <div class="news-content-page">
+                        <h3 class="news-title-page"><%= newsItem.title %></h3>
+                        <p class="news-excerpt-page"><%= newsItem.content.substring(0, 120) %>...</p>
+                        
+                        <div class="news-meta-page">
+                            <span class="news-date">📅 <%= new Date(newsItem.createdAt).toLocaleDateString('ru-RU') %></span>
+                            <a href="/news/<%= newsItem.id %>" class="read-more-page">Читать →</a>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
+
+            <% if (news.length === 0) { %>
+            <div class="empty-state">
+                <h3>Пока нет новостей</h3>
+                <p>Скоро здесь появятся свежие новости колледжа</p>
+            </div>
+            <% } %>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <img src="/images/logo-footer.png" alt="Логотип" width="40" height="40">
+            <p>&copy; 2025 Система рейтинга учащихся. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

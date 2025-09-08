@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .admin-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .admin-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .user-list {
+            margin-top: 2rem;
+        }
+        
+        .user-item {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span>🎓</span>
+                <span>Панель администратора</span>
+            </div>
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/admin">Админ-панель</a></li>
+                <li><a href="/auth/logout">Выйти</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <div class="admin-card">
+            <h2>📋 Добавить учащегося</h2>
+            <form action="/admin/add-student" method="POST">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>ФИО *</label>
+                        <input type="text" name="fullName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Телефон *</label>
+                        <input type="tel" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Группа *</label>
+                        <input type="text" name="groupName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Пароль *</label>
+                        <input type="password" name="password" required minlength="6">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary">Добавить учащегося</button>
+            </form>
+        </div>
+
+        <div class="admin-card">
+            <h2>👥 Список учащихся</h2>
+            <div class="user-list">
+                <div class="user-item" style="font-weight: bold;">
+                    <span>ФИО</span>
+                    <span>Группа</span>
+                    <span>Рейтинг</span>
+                    <span>Действия</span>
+                </div>
+                <% users.forEach(user => { %>
+                <div class="user-item">
+                    <span><%= user.fullName %></span>
+                    <span><%= user.groupName %></span>
+                    <span><%= user.rating %> баллов</span>
+                    <span>
+                        <form action="/admin/delete-user/<%= user.id %>" method="POST" style="display: inline;">
+                            <button type="submit" onclick="return confirm('Удалить учащегося?')">🗑️</button>
+                        </form>
+                    </span>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
