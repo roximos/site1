@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рейтинг учащихся колледжа</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/images/logo.footer.jpg" alt="Логотип колледжа" width="60" height="60">
+                <span>Рейтинг учащихся</span>
+            </div>
+            <ul>
+    <li><a href="/">Главная</a></li>
+    <li><a href="/news">Новости</a></li>
+    <li><a href="/rating">Рейтинг</a></li>
+    <% if (user) { %>
+        <li><a href="/profile">Личный кабинет</a></li>
+        <li><a href="/auth/logout">Выйти</a></li>
+    <% } else { %>
+        <li><a href="/auth/login">Войти</a></li>
+        <li><a href="/auth/register">Регистрация</a></li>
+    <% } %>
+</ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Главный заголовок -->
+        <section class="welcome-section">
+            <div class="container">
+                <h1>Добро пожаловать в систему рейтинга учащихся</h1>
+                <p class="subtitle">Отслеживайте достижения и успехи студентов вашего колледжа</p>
+            </div>
+        </section>
+
+        <!-- Основной контент с разделением -->
+        <div class="main-container">
+            <!-- Левая колонка - Топ учащихся -->
+            <section class="left-column">
+                <div class="section-header">
+                    <h2>🏆 Топ учащихся колледжа</h2>
+                </div>
+                
+                <div class="top-students">
+                    <% topStudents.forEach((student, index) => { %>
+                    <div class="student-card <%= index === 0 ? 'first-place' : '' %>">
+                        <div class="student-rank">
+                            <span class="rank-number"><%= index + 1 %></span>
+                        </div>
+                        
+                        <div class="student-avatar">
+                            <img src="/images/avatar<%= (index % 3) + 1 %>.jpg" alt="<%= student.fullName %>">
+                        </div>
+                        
+                        <div class="student-info">
+                            <h3 class="student-name"><%= student.fullName %></h3>
+                            <div class="student-details">
+                                <span class="detail-group">Группа: <%= student.group %></span>
+                                <span class="detail-rating">Рейтинг: <%= student.rating %> баллов</span>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+                </div>
+            </section>
+
+            <!-- Правая колонка - Новости -->
+            <section class="right-column">
+                <div class="section-header">
+                    <h2>📰 Последние новости</h2>
+                </div>
+                
+                <div class="news-grid">
+                    <% latestNews.forEach((news, index) => { %>
+                    <div class="news-card">
+                        <div class="news-image">
+                            <img src="/images/news<%= (index % 4) + 1 %>.jpg" alt="<%= news.title %>">
+                        </div>
+                        
+                        <div class="news-content">
+                            <h3 class="news-title"><%= news.title %></h3>
+                            <p class="news-excerpt"><%= news.content.substring(0, 100) %>...</p>
+                            <div class="news-footer">
+                                <a href="/news/<%= news._id %>" class="read-more">Читать далее →</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <img src="/images/logo-footer.png" alt="Логотип" width="40" height="40">
+            <p>&copy; 2025 Система рейтинга учащихся. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>
