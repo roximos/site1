@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить новость</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/images/logo.footer.jpg" alt="Логотип колледжа" width="60" height="60">
+                <span>Добавить новость</span>
+            </div>
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/news">Новости</a></li>
+                <li><a href="/rating">Топ студентов</a></li>
+                <li><a href="/admin">Админ-панель</a></li>
+                <li><a href="/auth/logout">Выйти</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <h1>Добавить новость</h1>
+            
+            <% if (typeof error !== 'undefined') { %>
+                <div class="error-message" style="color: red; margin: 1rem 0; padding: 10px; background: #ffeeee; border-radius: 5px;">
+                    <%= error %>
+                </div>
+            <% } %>
+            
+            <% if (typeof success !== 'undefined') { %>
+                <div class="success-message" style="color: green; margin: 1rem 0; padding: 10px; background: #eeffee; border-radius: 5px;">
+                    <%= success %>
+                </div>
+            <% } %>
+
+            <form action="/admin/add-news" method="POST">
+                <div class="form-group">
+                    <label for="title">Заголовок новости</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="content">Текст новости</label>
+                    <textarea id="content" name="content" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary">Опубликовать новость</button>
+            </form>
+            
+            <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #eee;">
+                <h3>Как заменить фотографии:</h3>
+                <p>1. Замените файлы в папке <code>public/images/</code>:</p>
+                <ul>
+                    <li><code>news1.jpg</code> - для первой новости</li>
+                    <li><code>news2.jpg</code> - для второй новости</li>
+                    <li><code>news3.jpg</code> - для третьей новости</li>
+                    <li><code>news4.jpg</code> - для четвертой новости</li>
+                </ul>
+                <p>2. Сохраните файлы с такими же именами</p>
+                <p>3. Размеры фото: 400x250px (рекомендуется)</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <img src="/images/logo-footer.png" alt="Логотип" width="40" height="40">
+            <p>&copy; 2025 Наши достижения. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

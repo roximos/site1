@@ -107,7 +107,6 @@
                 <li><a href="/news" class="active">Новости</a></li>
                 <li><a href="/rating">Рейтинг</a></li>
                 <% if (user) { %>
-                    <li><a href="/profile">Личный кабинет</a></li>
                     <% if (user.role === 'admin') { %>
                         <li><a href="/admin">Админ-панель</a></li>
                     <% } %>

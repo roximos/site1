@@ -299,3 +299,71 @@ footer {
         order: -1;
     }
 }
+
+/* Стили для улучшенного топа студентов */
+.view-all {
+    color: #667eea;
+    font-size: 0.9rem;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    display: inline-block;
+}
+
+.view-all:hover {
+    color: #5a67d8;
+    text-decoration: underline;
+}
+
+/* Медали для призовых мест */
+.medal {
+    font-size: 1.2rem;
+    margin-left: 5px;
+}
+
+/* Стили для второго и третьего места */
+.student-card.second-place {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e0e0e0 100%);
+    border: 2px solid #c0c0c0;
+}
+
+.student-card.third-place {
+    background: linear-gradient(135deg, #cd7f32 0%, #e39e54 100%);
+    border: 2px solid #cd7f32;
+}
+
+/* Прогресс-бар */
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 3px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.detail-progress {
+    width: 100%;
+    margin-top: 0.3rem;
+}
+
+/* Адаптивность для новых элементов */
+@media (max-width: 576px) {
+    .view-all {
+        font-size: 0.8rem;
+    }
+    
+    .medal {
+        font-size: 1rem;
+    }
+    
+    .progress-bar {
+        height: 4px;
+    }
+}

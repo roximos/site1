@@ -3,40 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель администратора</title>
+    <title>Админ-панель</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        .admin-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-        
-        .admin-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        
-        .user-list {
-            margin-top: 2rem;
-        }
-        
-        .user-item {
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 1rem;
+        .add-points-form {
+            display: flex;
+            gap: 10px;
             align-items: center;
+            margin: 10px 0;
+        }
+        
+        .points-input {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .add-points-btn {
+            padding: 5px 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .add-points-btn:hover {
+            background: #5a67d8;
+        }
+
+        a[href="/admin/add-news"]:hover,
+        a[href="/news"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
     </style>
 </head>
@@ -44,75 +44,140 @@
     <header>
         <nav>
             <div class="logo">
-                <span>🎓</span>
-                <span>Панель администратора</span>
+                <img src="/images/logo.footer.jpg" alt="Логотип колледжа" width="60" height="60">
+                <span>Админ-панель</span>
             </div>
             <ul>
                 <li><a href="/">Главная</a></li>
+                <li><a href="/news">Новости</a></li>
+                <li><a href="/rating">Топ студентов</a></li>
                 <li><a href="/admin">Админ-панель</a></li>
                 <li><a href="/auth/logout">Выйти</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="admin-container">
-        <div class="admin-card">
-            <h2>📋 Добавить учащегося</h2>
-            <form action="/admin/add-student" method="POST">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>ФИО *</label>
-                        <input type="text" name="fullName" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Телефон *</label>
-                        <input type="tel" name="phone" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Группа *</label>
-                        <input type="text" name="groupName" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Email *</label>
-                        <input type="email" name="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Пароль *</label>
-                        <input type="password" name="password" required minlength="6">
-                    </div>
+    <main>
+        <div class="container" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
+            <h1>Админ-панель</h1>
+            
+            <!-- Кнопки управления новостями вверху -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                <a href="/admin/add-news" style="display: inline-block; padding: 12px 24px; 
+                   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                   color: white; text-decoration: none; border-radius: 8px; font-weight: 500;
+                   transition: transform 0.3s;">
+                    📝 Создать новость
+                </a>
+                <a href="/news" style="display: inline-block; padding: 12px 24px; 
+                   background: #28a745; color: white; text-decoration: none; 
+                   border-radius: 8px; font-weight: 500; transition: transform 0.3s;">
+                    📰 Все новости
+                </a>
+            </div>
+            
+            <% if (typeof error !== 'undefined') { %>
+                <div class="error-message" style="color: red; margin: 1rem 0; padding: 10px; background: #ffeeee; border-radius: 5px;">
+                    <%= error %>
                 </div>
-                
-                <button type="submit" class="btn-primary">Добавить учащегося</button>
-            </form>
-        </div>
+            <% } %>
+            
+            <% if (typeof success !== 'undefined') { %>
+                <div class="success-message" style="color: green; margin: 1rem 0; padding: 10px; background: #eeffee; border-radius: 5px;">
+                    <%= success %>
+                </div>
+            <% } %>
 
-        <div class="admin-card">
-            <h2>👥 Список учащихся</h2>
-            <div class="user-list">
-                <div class="user-item" style="font-weight: bold;">
-                    <span>ФИО</span>
-                    <span>Группа</span>
-                    <span>Рейтинг</span>
-                    <span>Действия</span>
+            <h2>Список студентов</h2>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                <thead>
+                    <tr style="background: #f8f9fa;">
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">ID</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">ФИО</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Группа</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Email</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Баллы</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach((user) => { %>
+                    <tr style="border-bottom: 1px solid #dee2e6;">
+                        <td style="padding: 12px;"><%= user.id %></td>
+                        <td style="padding: 12px;"><%= user.fullName %></td>
+                        <td style="padding: 12px;"><%= user.groupName %></td>
+                        <td style="padding: 12px;"><%= user.email %></td>
+                        <td style="padding: 12px; font-weight: bold;"><%= user.rating %></td>
+                        <td style="padding: 12px;">
+                            <form action="/admin/add-points/<%= user.id %>" method="POST" class="add-points-form">
+                                <input type="number" name="points" min="1" max="100" required 
+                                       class="points-input" placeholder="1-100">
+                                <button type="submit" class="add-points-btn">+ Баллы</button>
+                            </form>
+                            <form action="/admin/delete-user/<%= user.id %>" method="POST" 
+                                  style="margin-top: 5px;" onsubmit="return confirm('Удалить студента?')">
+                                <button type="submit" style="padding: 5px 10px; background: #dc3545; color: white; 
+                                        border: none; border-radius: 4px; cursor: pointer;">
+                                    Удалить
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+
+            <h2 style="margin-top: 2rem;">Добавить нового студента</h2>
+            <form action="/admin/add-student" method="POST" 
+                  style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-top: 1rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <input type="text" name="fullName" placeholder="ФИО" required 
+                           style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    <input type="tel" name="phone" placeholder="Телефон" 
+                           style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    <input type="text" name="groupName" placeholder="Группа" required 
+                           style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    <input type="email" name="email" placeholder="Email" required 
+                           style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    <input type="password" name="password" placeholder="Пароль" required 
+                           style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
                 </div>
-                <% users.forEach(user => { %>
-                <div class="user-item">
-                    <span><%= user.fullName %></span>
-                    <span><%= user.groupName %></span>
-                    <span><%= user.rating %> баллов</span>
-                    <span>
-                        <form action="/admin/delete-user/<%= user.id %>" method="POST" style="display: inline;">
-                            <button type="submit" onclick="return confirm('Удалить учащегося?')">🗑️</button>
-                        </form>
-                    </span>
+                <button type="submit" 
+                        style="margin-top: 1rem; padding: 10px 20px; background: #28a745; color: white; 
+                               border: none; border-radius: 4px; cursor: pointer;">
+                    Добавить студента
+                </button>
+            </form>
+
+            <!-- Управление новостями -->
+            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #eee;">
+                <h2>Управление новостями</h2>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                    <a href="/admin/add-news" style="display: inline-block; padding: 12px 24px; 
+                       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                       color: white; text-decoration: none; border-radius: 8px; font-weight: 500;
+                       transition: transform 0.3s;">
+                        📝 Создать новость
+                    </a>
+                    <a href="/news" style="display: inline-block; padding: 12px 24px; 
+                       background: #28a745; color: white; text-decoration: none; 
+                       border-radius: 8px; font-weight: 500; transition: transform 0.3s;">
+                        📰 Все новости
+                    </a>
                 </div>
-                <% }); %>
+                <p style="margin-top: 1rem; color: #666; font-size: 0.9rem;">
+                    Для замены фотографий новостей замените файлы в папке public/images/<br>
+                    news1.jpg, news2.jpg, news3.jpg, news4.jpg
+                </p>
             </div>
         </div>
     </main>
+
+    <footer>
+        <div class="footer-content">
+            <img src="/images/logo-footer.png" alt="Логотип" width="40" height="40">
+            <p>&copy; 2025 Наши достижения. Все права защищены.</p>
+        </div>
+    </footer>
 </body>
 </html>
